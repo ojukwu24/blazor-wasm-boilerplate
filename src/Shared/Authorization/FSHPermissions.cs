@@ -26,6 +26,8 @@ public static class FSHResource
     public const string RoleClaims = nameof(RoleClaims);
     public const string Products = nameof(Products);
     public const string Brands = nameof(Brands);
+    public const string Categories = nameof(Categories);
+    public const string UnitsOfMeasurements = nameof(UnitsOfMeasurements);
 }
 
 public static class FSHPermissions
@@ -64,7 +66,17 @@ public static class FSHPermissions
         new("View Tenants", FSHAction.View, FSHResource.Tenants, IsRoot: true),
         new("Create Tenants", FSHAction.Create, FSHResource.Tenants, IsRoot: true),
         new("Update Tenants", FSHAction.Update, FSHResource.Tenants, IsRoot: true),
-        new("Upgrade Tenant Subscription", FSHAction.UpgradeSubscription, FSHResource.Tenants, IsRoot: true)
+        new("Upgrade Tenant Subscription", FSHAction.UpgradeSubscription, FSHResource.Tenants, IsRoot: true),
+        new("View Categories", FSHAction.View, FSHResource.Categories, IsBasic: true),
+        new("Search Categories", FSHAction.Search, FSHResource.Categories, IsBasic: true),
+        new("Create Categories", FSHAction.Create, FSHResource.Categories),
+        new("Update Categories", FSHAction.Update, FSHResource.Categories),
+        new("Delete Categories", FSHAction.Delete, FSHResource.Categories),
+        new("View UnitsOfMeasurements", FSHAction.View, FSHResource.UnitsOfMeasurements, IsBasic: true),
+        new("Search UnitsOfMeasurements", FSHAction.Search, FSHResource.UnitsOfMeasurements, IsBasic: true),
+        new("Create UnitsOfMeasurements", FSHAction.Create, FSHResource.UnitsOfMeasurements),
+        new("Update UnitsOfMeasurements", FSHAction.Update, FSHResource.UnitsOfMeasurements),
+        new("Delete UnitsOfMeasurements", FSHAction.Delete, FSHResource.UnitsOfMeasurements)
     };
 
     public static IReadOnlyList<FSHPermission> All { get; } = new ReadOnlyCollection<FSHPermission>(_all);

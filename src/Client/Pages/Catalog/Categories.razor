@@ -1,0 +1,50 @@
+﻿@page "/catalog/categories"
+@attribute [MustHavePermission(FSHAction.View, FSHResource.Categories)]
+
+@inject IStringLocalizer<Categories> L
+@inject ICategoriesClient CategoriesClient
+
+<FshTitle Title="@L["Categories"]" Description="@L["Manage Product Categories"]"/>
+
+<EntityTable TEntity="CategoryDto" TId="Guid" TRequest="UpdateCategoryRequest" Context="@Context">
+    <EditFormContent>
+        @if (!Context.AddEditModal.IsCreate)
+        {
+            <MudItem xs="12" md="6">
+                <MudTextField Value="context.Id" ReadOnly DisableUnderLine Label="@L[$"Category Id"]" />
+            </MudItem>
+        }
+
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" For="@(() => context.Name)" @bind-Value="context.Name" Label="@L["Name"]" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField For="@(() => context.Description)" @bind-Value="context.Description"
+                Label="@L["Description"]" />
+        </MudItem>
+    </EditFormContent>
+</EntityTable>
+
+@code {
+    protected EntityServerTableContext<CategoryDto, Guid, UpdateCategoryRequest> Context { get; set; } = default!;
+
+    protected override void OnInitialized() =>
+        Context = new(
+            entityName: L["Category"],
+            entityNamePlural: L["Categories"],
+            entityResource: FSHResource.Categories,
+            fields: new()
+            {
+                new(category => category.Id, L["Id"], "Id"),
+                new(category => category.Name, L["Name"], "Name"),
+                new(category => category.Description, L["Description"], "Description"),
+            },
+            idFunc: category => category.Id,
+            searchFunc: async filter => (await CategoriesClient
+                .SearchAsync(null, filter.Adapt<SearchCategoriesRequest>()))
+                .Adapt<PaginationResponse<CategoryDto>>(),
+            createFunc: async category => await CategoriesClient.CreateAsync(null, category.Adapt<CreateCategoryRequest>()),
+            updateFunc: async (id, category) => await CategoriesClient.UpdateAsync(id,null, category),
+            deleteFunc: async id => await CategoriesClient.DeleteAsync(id, null),
+            exportAction: string.Empty);
+}

@@ -1,0 +1,47 @@
+﻿@page "/catalog/units-of-measurements"
+@attribute [MustHavePermission(FSHAction.View, FSHResource.UnitsOfMeasurements)]
+
+@inject IStringLocalizer<UnitsOfMeasurements> L
+@inject IUnitsOfMeasurementClient UnitsOfMeasurementsClient
+
+<FshTitle Title="@L["Units of Measurements"]" Description="@L["Manage Units of Measurements."]" />
+
+<EntityTable TEntity="UnitOfMeasurementDto" TId="Guid" TRequest="UpdateUnitOfMeasurementRequest" Context="@Context">
+
+    <EditFormContent>
+        @if (!Context.AddEditModal.IsCreate)
+        {
+            <MudItem xs="12" md="6">
+                <MudTextField Value="context.Id" ReadOnly DisableUnderLine Label="@L[$"UnitsOfMeasurements Id"]" />
+            </MudItem>
+        }
+        <MudItem xs="12" md="12">
+            <MudTextField T="string" For="@(() => context.Name)" @bind-Value="context.Name" Label="@L["Name"]" />
+        </MudItem>
+        
+    </EditFormContent>
+
+</EntityTable>
+
+@code {
+    protected EntityServerTableContext<UnitOfMeasurementDto, Guid, UpdateUnitOfMeasurementRequest> Context { get; set; } = default!;
+
+    protected override void OnInitialized() =>
+        Context = new(
+            entityName: L["Unit of Measurement"],
+            entityNamePlural: L["Units of Measurements"],
+            entityResource: FSHResource.UnitsOfMeasurements,
+            fields: new()
+            {
+                new(uom => uom.Id, L["Id"], "Id"),
+                new(uom => uom.Name, L["Name"], "Name")
+            },
+            idFunc: uom => uom.Id,
+            searchFunc: async filter => (await UnitsOfMeasurementsClient
+                .SearchAsync(string.Empty, filter.Adapt<SearchUnitOfMeasurementRequest>()))
+                .Adapt<PaginationResponse<UnitOfMeasurementDto>>(),
+            createFunc: async uom => await UnitsOfMeasurementsClient.CreateAsync(string.Empty, uom.Adapt<CreateUnitOfMeasurementRequest>()),
+            updateFunc: async (id, uom) => await UnitsOfMeasurementsClient.UpdateAsync(id, string.Empty, uom),
+            deleteFunc: async id => await UnitsOfMeasurementsClient.DeleteAsync(id, string.Empty),
+            exportAction: string.Empty);
+}
