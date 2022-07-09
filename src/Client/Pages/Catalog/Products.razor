@@ -31,7 +31,13 @@
             <BrandAutocomplete For="@(() => context.BrandId)" @bind-Value="context.BrandId" OffsetY="true" />
         </MudItem>
         <MudItem xs="12" md="6">
+            <CategoryAutoComplete For="@(() => context.CategoryId)" @bind-Value="context.CategoryId" OffsetY="true" />
+        </MudItem>
+        <MudItem xs="12" md="6">
             <MudTextField Label="@L["Rate"]" For="@(() => context.Rate)" @bind-Value="context.Rate" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <UnitOfMeasurementAutocomplete For="@(() => context.UnitOfMeasurementId)" @bind-Value="context.UnitOfMeasurementId" OffsetY="true" />
         </MudItem>
         <MudItem xs="12" md="12">
             <MudItem>
