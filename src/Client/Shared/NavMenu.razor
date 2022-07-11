@@ -49,6 +49,11 @@
                 </MudNavLink>
             }
         </MudNavGroup>
+        <MudNavGroup Title="@L["Inventory"]" Expanded Icon="@Icons.Filled.FileOpen">
+            <MudNavLink Href="/inventory/suppliers" Icon="@Icons.Filled.FilePresent" Class="fsh-nav-child">
+                    @L["Suppliers"]
+            </MudNavLink>
+        </MudNavGroup>
     }
     @if (CanViewAdministrationGroup)
     {

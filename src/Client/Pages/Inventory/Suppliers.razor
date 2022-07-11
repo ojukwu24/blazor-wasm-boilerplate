@@ -1,0 +1,61 @@
+﻿@page "/inventory/suppliers"
+@attribute [MustHavePermission(FSHAction.View, FSHResource.Suppliers)]
+
+@inject IStringLocalizer<Suppliers> L
+@inject ISuppliersClient SuppliersClient
+
+<FshTitle Title="@L["Suppliers"]" Description="@L["Manage Suppliers."]" />
+
+<EntityTable TEntity="SupplierDto" TId="Guid" TRequest="UpdateSupplierRequest" Context="@Context">
+
+    <EditFormContent>
+        @if (!Context.AddEditModal.IsCreate)
+        {
+            <MudItem xs="12" md="6">
+                <MudTextField Value="context.Id" ReadOnly DisableUnderLine Label="@L[$"Supplier Id"]" />
+            </MudItem>
+        }
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" For="@(() => context.Name)" @bind-Value="context.Name" Label="@L["Name"]" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField For="@(() => context.ContactPerson)" @bind-Value="context.ContactPerson"
+                Label="@L["ContactPerson"]" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField For="@(() => context.ContactPhoneNumber)" @bind-Value="context.ContactPhoneNumber"
+                Label="@L["ContactPhoneNumber"]" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField For="@(() => context.ContactEmail)" @bind-Value="context.ContactEmail"
+                Label="@L["ContactEmailAddress"]" />
+        </MudItem>
+    </EditFormContent>
+
+</EntityTable>
+
+@code{
+    protected EntityServerTableContext<SupplierDto, Guid, UpdateSupplierRequest> Context { get; set; } = default!;
+
+   protected override void OnInitialized() =>
+        Context = new(
+            entityName: L["Supplier"],
+            entityNamePlural: L["Suppliers"],
+            entityResource: FSHResource.Suppliers,
+            fields: new()
+            {
+                new(Supplier => Supplier.Name, L["Name"], "Name"),
+                new(Supplier => Supplier.ContactPerson, L["ContactPerson"], "Contact Person"),
+                new(Supplier => Supplier.ContactPerson, L["ContactEmail"], "Contact Email"),
+                new(Supplier => Supplier.ContactPerson, L["ContactPhoneNumber"], "Contact Phone Number"),
+                
+            },
+            idFunc: supplier => supplier.Id,
+            searchFunc: async filter => (await SuppliersClient
+                .SearchAsync(string.Empty, filter.Adapt<SearchSuppliersRequest>()))
+                .Adapt<PaginationResponse<SupplierDto>>(),
+            createFunc: async supplier => await SuppliersClient.CreateAsync(string.Empty, supplier.Adapt<CreateSupplierRequest>()),
+            updateFunc: async (id, supplier) => await SuppliersClient.UpdateAsync(id, string.Empty, supplier),
+            deleteFunc: async id => await SuppliersClient.DeleteAsync(id, string.Empty),
+            exportAction: string.Empty);
+}

@@ -28,6 +28,7 @@ public static class FSHResource
     public const string Brands = nameof(Brands);
     public const string Categories = nameof(Categories);
     public const string UnitsOfMeasurements = nameof(UnitsOfMeasurements);
+    public const string Suppliers = nameof(Suppliers);
 }
 
 public static class FSHPermissions
@@ -76,7 +77,12 @@ public static class FSHPermissions
         new("Search UnitsOfMeasurements", FSHAction.Search, FSHResource.UnitsOfMeasurements, IsBasic: true),
         new("Create UnitsOfMeasurements", FSHAction.Create, FSHResource.UnitsOfMeasurements),
         new("Update UnitsOfMeasurements", FSHAction.Update, FSHResource.UnitsOfMeasurements),
-        new("Delete UnitsOfMeasurements", FSHAction.Delete, FSHResource.UnitsOfMeasurements)
+        new("Delete UnitsOfMeasurements", FSHAction.Delete, FSHResource.UnitsOfMeasurements),
+        new("View Suppliers", FSHAction.View, FSHResource.Suppliers, IsBasic: true),
+        new("Search Suppliers", FSHAction.Search, FSHResource.Suppliers, IsBasic: true),
+        new("Create Suppliers", FSHAction.Create, FSHResource.Suppliers),
+        new("Update Suppliers", FSHAction.Update, FSHResource.Suppliers),
+        new("Delete Suppliers", FSHAction.Delete, FSHResource.Suppliers)
     };
 
     public static IReadOnlyList<FSHPermission> All { get; } = new ReadOnlyCollection<FSHPermission>(_all);

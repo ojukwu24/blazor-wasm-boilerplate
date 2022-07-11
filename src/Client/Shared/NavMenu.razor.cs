@@ -24,6 +24,7 @@ public partial class NavMenu
     private bool _canViewTenants;
     private bool _canViewCategories;
     private bool _canViewUnitsOfMeasurements;
+    private bool _canViewSuppliers;
     private bool CanViewAdministrationGroup => _canViewUsers || _canViewRoles || _canViewTenants;
 
     protected override async Task OnParametersSetAsync()
@@ -39,5 +40,6 @@ public partial class NavMenu
         _canViewTenants = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.Tenants);
         _canViewCategories = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.Categories);
         _canViewUnitsOfMeasurements = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.UnitsOfMeasurements);
+        _canViewSuppliers = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.Suppliers);
     }
 }

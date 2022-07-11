@@ -104,7 +104,7 @@ public partial class Products
         }
     }
 
-    private decimal _searchMaximumRate = 9999;
+    private decimal _searchMaximumRate = 100000;
     private decimal SearchMaximumRate
     {
         get => _searchMaximumRate;
