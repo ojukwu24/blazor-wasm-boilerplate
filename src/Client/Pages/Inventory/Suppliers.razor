@@ -46,8 +46,8 @@
             {
                 new(Supplier => Supplier.Name, L["Name"], "Name"),
                 new(Supplier => Supplier.ContactPerson, L["ContactPerson"], "Contact Person"),
-                new(Supplier => Supplier.ContactPerson, L["ContactEmail"], "Contact Email"),
-                new(Supplier => Supplier.ContactPerson, L["ContactPhoneNumber"], "Contact Phone Number"),
+                new(Supplier => Supplier.ContactEmail, L["ContactEmail"], "Contact Email"),
+                new(Supplier => Supplier.ContactPhoneNumber, L["ContactPhoneNumber"], "Contact Phone Number"),
                 
             },
             idFunc: supplier => supplier.Id,
